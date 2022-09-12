@@ -12,6 +12,8 @@
   :dependencies
   [[org.clojure/clojure "1.9.0"]
    [clj-time "0.15.2"]
+   ;; https://github.com/bhauman/lein-figwheel/issues/612
+   [javax.xml.bind/jaxb-api "2.4.0-b180830.0359"]
    [com.andrewmcveigh/cljs-time "0.5.2"]]
 
   :aliases
