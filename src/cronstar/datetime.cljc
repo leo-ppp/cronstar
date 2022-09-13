@@ -65,7 +65,8 @@
 
 (defmethod to-timeinfo :datetime
   [dt]
-  {:minute      (t/minute dt)
+  {:second      (t/second dt)
+   :minute      (t/minute dt)
    :hour        (t/hour dt)
    :day-of-week (t/day-of-week dt)
    :day         (t/day dt)
