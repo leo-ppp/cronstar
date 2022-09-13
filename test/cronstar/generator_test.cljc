@@ -15,18 +15,18 @@
     "*/30 10-12 * * *"
     {:minute 42 :hour 8}
     8
-    '({:minute 0, :hour 10}
-      {:minute 30, :hour 10}
-      {:minute 0, :hour 11}
-      {:minute 30, :hour 11}
-      {:minute 0, :hour 12}
-      {:minute 30, :hour 12})
+    '({:second 0, :minute 0, :hour 10}
+      {:second 0, :minute 30, :hour 10}
+      {:second 0, :minute 0, :hour 11}
+      {:second 0, :minute 30, :hour 11}
+      {:second 0, :minute 0, :hour 12}
+      {:second 0, :minute 30, :hour 12})
 
     "*/5 */2 * * *"
-    {:minute 57 :hour 16}
+    {:second 0, :minute 57 :hour 16}
     2
-    '({:minute 0, :hour 18}
-      {:minute 5, :hour 18})
+    '({:second 0, :minute 0, :hour 18}
+      {:second 0, :minute 5, :hour 18})
 
     "*/5 */2 * * *"
     {:minute 57 :hour 23}

@@ -8,12 +8,13 @@
 
 (defn- ranges->seq
   [schedule k]
-  (let [ranges (k schedule)]
+  (if-let [ranges (k schedule)]
     (->> ranges
          (mapcat (fn [{:keys [from to step]}]
                    (range from (inc to) step)))
          (sort)
-         (distinct))))
+         (distinct))
+    [0]))
 
 (comment
   (ranges->seq {:day [{:from 1 :to 10 :step 3}
@@ -39,7 +40,7 @@
 ;; Public API
 
 (defn date-seq
-  [{:keys [day month] :as schedule} timeinfo]
+  [schedule timeinfo]
   (let [allowed-date? (date-pred schedule)]
     (->> timeinfo
          (datetime/to-timeinfo)
@@ -53,9 +54,11 @@
 (defn time-seq
   [schedule timeinfo]
   (->> (for [hour   (ranges->seq schedule :hour)
-             minute (ranges->seq schedule :minute)]
+             minute (ranges->seq schedule :minute)
+             second (ranges->seq schedule :second)]
          {:hour hour
-          :minute minute})
+          :minute minute
+          :second second})
        (drop-while #(datetime/before? % timeinfo))))
 
 
@@ -70,12 +73,12 @@
 
         times-on-timeinfo-day
         (if first-date-on-timeinfo?
-          (for [time (time-seq schedule (select-keys timeinfo [:minute :hour]))]
+          (for [time (time-seq schedule (select-keys timeinfo [:minute :hour :second]))]
             (merge first-date time)))
 
         times-on-more-days
         (for [date (if first-date-on-timeinfo? more-dates dates)
-              time (time-seq schedule {:minute 0 :hour 0})]
+              time (time-seq schedule {:minute 0 :hour 0 :second 0})]
           (merge date time))]
     (concat times-on-timeinfo-day times-on-more-days)))
 
@@ -94,7 +97,7 @@
   (require '[cronstar.parser :as cron-parser])
 
   (def schedule
-    (cron-parser/parse [:minute   :hour    :day             :month    :day-of-week]
+    (cron-parser/parse [[:minute   :hour    :day             :month    :day-of-week]]
                        "13,42     */10     1-10/2,22,9-13   *         *"))
 
   (def current-timeinfo

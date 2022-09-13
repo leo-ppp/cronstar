@@ -81,10 +81,11 @@
 
 
 (defn from-timeinfo
-  [{:keys [year month day hour minute]
+  [{:keys [year month day hour minute second]
     :or   {hour   0
-           minute 0}}]
-  (let [dt (t/date-time year month day hour minute 0)]
+           minute 0
+           second 0}}]
+  (let [dt (t/date-time year month day hour minute second)]
     #?(:clj (t/from-time-zone dt (t/default-time-zone)))
     #?(:cljs (t/from-default-time-zone dt))))
 
