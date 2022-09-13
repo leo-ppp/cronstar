@@ -9,17 +9,17 @@
   (are [ks expression ts result]
       (= result ((match/expression->matcher ks expression) ts))
 
-      [:minute :hour]
+      [[:minute :hour]]
       "22-24 */2"
       "2019-09-20 20:23:00"
       true
 
-      [:minute :hour :day :month :day-of-week]
+      [[:minute :hour :day :month :day-of-week]]
       "0 17 * * *"
       "2019-09-20 20:23:00"
       false
 
-      [:minute :hour :day :month :day-of-week]
+      [[:minute :hour :day :month :day-of-week]]
       "0 17 * * *"
       "2019-09-20 17:0:00"
       true))

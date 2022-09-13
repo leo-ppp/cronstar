@@ -72,18 +72,21 @@
    :day-of-week [{:from 1, :to 5, :step 1}]}"
 
   ([cron-expr]
-   (parse datetime/field-keys cron-expr))
+   (let [with-seconds (into [:second] datetime/field-keys)]
+     (parse [with-seconds datetime/field-keys] cron-expr)))
 
-  ([field-keys cron-expr]
-   (let [items (str/split (str/trim cron-expr) #"\s+")]
-     (when (< (count items) (count field-keys))
+  ([field-keys-options cron-expr]
+   (let [items (str/split (str/trim cron-expr) #"\s+")
+         items-count (count items)
+         matching-field-keys (first (filter #(= items-count (count %)) field-keys-options))]
+     (when (nil? matching-field-keys)
        (throw (ex-info "Cron expression string is not sufficient for key list"
                        {:expression cron-expr
-                        :field-keys field-keys})))
+                        :field-keys field-keys-options})))
      (->> items
           (map (fn [k cron-expr]
                  [k (parse-list k cron-expr)])
-               field-keys)
+               matching-field-keys)
           (into {})))))
 
 
@@ -91,6 +94,6 @@
 
 (comment
 
-  (parse [:minute :hour] "*/2 1-10/3")
+  (parse [[:minute :hour]] "*/2 1-10/3")
 
   ,,,)

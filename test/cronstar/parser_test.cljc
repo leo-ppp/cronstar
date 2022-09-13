@@ -47,4 +47,12 @@
      :month       [{:from 1, :to 12, :step 1}],
      :day-of-week [{:from 1, :to 5, :step 1}]}
 
+    "* * * * * *"
+    {:second [{:from 0, :to 59, :step 1}],
+     :minute [{:from 0, :to 59, :step 1}],
+     :hour [{:from 0, :to 23, :step 1}],
+     :day [{:from 1, :to 31, :step 1}],
+     :month [{:from 1, :to 12, :step 1}],
+     :day-of-week [{:from 0, :to 7, :step 1}]}
+
     ,,,))
